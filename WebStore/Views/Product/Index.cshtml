@@ -1,0 +1,99 @@
+﻿@using PagedList.Mvc;
+@using WebStore.Enum;
+@model WebStore.Models.ViewModel.ProductViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Product</h2>
+@using (Html.BeginForm("Index", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(model => model.page)
+    <div class="row">
+        <div class="col-md-12">
+            <!-- PANEL DEFAULT -->
+            <div class="panel">
+                <div class="panel-heading">
+                    <h5 class="widget-title">Product 查詢區</h5>
+                </div>
+                <div style="overflow: auto;">
+                    <div class="panel-body">
+                        @Html.LabelFor(model => model.Header.ProductName, htmlAttributes: new { @class = "col-md-2 control-label" })
+                        <div class="col-md-3">
+                            <input class="form-control" id="select_ProductName" name="Header.ProductName" placeholder="請輸入 @Html.DisplayNameFor(model => model.Header.ProductName)"
+                                   type="text" value="@Model.Header.ProductName">
+                        </div>
+                        @Html.LabelFor(model => model.Header.CreateTime, htmlAttributes: new { @class = "col-md-2 control-label" })
+                        <div class="col-md-3">
+                            <input class="form-control" id="select_CreateTime" name="Header.CreateTime" placeholder="請輸入 @Html.DisplayNameFor(model => model.Header.CreateTime)"
+                                   type="text" value="@Model.Header.CreateTime">
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        @Html.LabelFor(model => model.Header.Qty, htmlAttributes: new { @class = "col-md-2 control-label" })
+                        <div class="col-md-3">
+                            <input class="form-control" id="select_Qty" name="Header.StartDate" placeholder="請輸入 @Html.DisplayNameFor(model => model.Header.Qty)"
+                                   type="text" value="@Model.Header.Qty">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <button type="button" id="Create" class="btn btn-default pull-right">
+                        <i class="fa fa-plus-square"></i> 新增
+                    </button>
+                    <button type="submit" class="btn btn-default pull-right">
+                        <i class="fa fa-search lg"></i>查詢
+                    </button>
+                </div>
+            </div>
+            <!-- END PANEL DEFAULT -->
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        @Html.Partial("_ProductList", Model.Content_List)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        @Html.PagedListPager(Model.Content_List, page => Url.Action("Index", new { ViewModel = @Model, page }),
+                                                                                                                                                             PagedListRenderOptions.ClassicPlusFirstAndLast)
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var Message = '@Html.Raw(HttpUtility.JavaScriptStringEncode((string)@TempData["message"]))';
+            if (Message != '') {
+                showDialog(Message, false);
+             }
+
+            $("#Create").click(function () {
+                PackageEvent('', true);
+            });
+
+        });
+        function PackageEvent(uid, createOrUpdat)
+        {
+            var dataType = '@Actions.Create';
+            var select_CreateTime = $("#select_CreateTime").val();
+            var select_ProductName = $("#select_ProductName").val();
+            var select_Qty = $("#select_Qty").val();
+
+            var url = '@Url.Action("ProductMain", "Product")'+'?guid=' + uid +
+                '&selectCreateTime=' + select_CreateTime + '&selectProductName=' + select_ProductName +
+                '&selectQty=' + select_Qty +
+                '&pages=' + @Model.page+ '&ActionType=';
+            if (!createOrUpdat) // True = Create; False = Update
+            {
+                dataType = '@Actions.Update';
+            }
+            url += dataType;
+
+            window.location.href = url;
+        }
+    </script>
+}

@@ -106,6 +106,13 @@ namespace WebStore.Models.ViewModel
         public string ProductName { get; set; }
 
         /// <summary>
+        /// 商品數量.
+        /// </summary>
+        [DisplayName("商品數量")]
+        [Range(0, int.MaxValue, ErrorMessage = "請輸入有效的數字")]
+        public int Qty { get; set; }
+
+        /// <summary>
         /// 狀態. False = 刪除,True = 啟用中
         /// </summary>
         [Required]

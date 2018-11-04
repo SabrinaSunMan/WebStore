@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - 我的 ASP.NET 應用程式</title>
@@ -24,6 +24,7 @@
                     <li>@Html.ActionLink("首頁", "Index", "Home")</li>
                     <li>@Html.ActionLink("關於", "About", "Home")</li>
                     <li>@Html.ActionLink("連絡人", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("商品", "Index", "Product")</li>
                 </ul>
             </div>
         </div>
@@ -39,5 +40,78 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+    <script>
+        $(document).ready(function () {
+
+            function showconfirm(Guid, Pages, ControllerName, TableName) {
+                var $dialog = $('<div id="dialog-confirm" ></div>');
+                var text01 = $dialog.html('<p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>刪除將無法回復，確定刪除嗎?</p>');
+                var text02 = text01.dialog({
+                    autoOpen: false,
+                    resizable: false,
+                    modal: true,
+                    width: '300',
+                    title: "刪除提醒視窗",
+                    buttons: {
+                        "確認刪除": function () {
+                            $(this).dialog("close");
+                            Delete(Guid, Pages, ControllerName, TableName);
+                        },
+                        "取消": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+                $dialog.dialog('open');
+            }
+
+            function showDialog(message, reloadtrue, responseViewModel) {
+                var $dialog = $('<div id="dialog" ></div>')
+                    .html(message)
+                    .dialog({
+                        autoOpen: false,
+                        resizable: false,
+                        modal: true,
+                        width: '200',
+                        title: "訊息視窗",
+                        buttons: {
+                            "確認": function () {
+                                $(this).dialog("close");
+                                if (reloadtrue == true) { //刪除後需要Reload
+                                    //location.reload();
+                                    $("#ReloadBlock").html(responseViewModel);
+                                }
+                                //else {
+                                //    location.reload();
+                                //}
+                            }
+                        }
+                    });
+                $dialog.dialog('open');
+            }
+
+            function Delete(Guid, Pages, ControllerName, TableName) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/' + ControllerName + '/Delete',
+                    dataType: "json",
+                    data: {
+                        guid: Guid,
+                        actionTable: TableName
+                    },
+                    success:
+                        function (response) {
+                            //if (response.result != null) {
+                            if (response.result) {
+                                showDialog(response.result, true, response.viewModel);
+                            } else {
+                                location.reload();
+                            }
+                        },
+                    error: function () { showDialog('未知的錯誤!', false); }
+                });
+            }
+        }
+    </script>
 </body>
 </html>

@@ -14,7 +14,7 @@ namespace WebStore.Models
     
     public partial class Product
     {
-        public int ProductID { get; set; }
+        public string ProductID { get; set; }
         public string ProductName { get; set; }
         public int Qty { get; set; }
         public System.DateTime CreateTime { get; set; }

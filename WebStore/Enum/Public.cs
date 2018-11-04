@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -49,5 +50,76 @@ namespace WebStore.Enum
         /// 嚴重錯誤
         /// </summary>
         Error = 0
+    }
+
+    public enum DataAction
+    {
+        /// <summary>
+        /// 新增
+        /// </summary>
+        Create = 0,
+
+        /// <summary>
+        /// 建立成功
+        /// </summary>
+        [Description("建立成功")]
+        CreateScuess = 1,
+
+        /// <summary>
+        /// 建立失敗
+        /// </summary>
+        [Description("建立失敗")]
+        CreateFail = 2,
+
+        /// <summary>
+        /// 建立失敗
+        /// </summary>
+        [Description("已有重複資料，請重新輸入")]
+        CreateFailReapet = 3,
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        Update = 4,
+
+        /// <summary>
+        /// 更新成功
+        /// </summary>
+        [Description("更新成功")]
+        UpdateScuess = 5,
+
+        /// <summary>
+        /// 更新失敗
+        /// </summary>
+        [Description("更新失敗")]
+        UpdateFail = 6,
+
+        Read = 7,
+
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        Delete = 8,
+
+        /// <summary>
+        /// 刪除成功
+        /// </summary>
+        [Description("刪除成功")]
+        DeleteScuess = 5,
+
+        /// <summary>
+        /// 刪除失敗
+        /// </summary>
+        [Description("刪除失敗")]
+        DeleteFail = 6
+    }
+
+    public enum TableName
+    {
+        /// <summary>
+        /// 產品
+        /// </summary>
+        [Description("產品")]
+        Product = 0
     }
 }

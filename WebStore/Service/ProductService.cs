@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using WebStore.App_Start;
 using WebStore.Enum;
+using WebStore.Helper;
 using WebStore.Interface;
+using WebStore.Models;
 using WebStore.Models.ViewModel;
 using WebStore.Repositories;
 
@@ -64,6 +67,106 @@ namespace WebStore.Service
                 Status = s.Status.ToString()
             });
             return ReturnList;
+        }
+
+        /// <summary>
+        /// Returns the product detail view model.
+        /// </summary>
+        /// <param name="ActionType">Type of the action.</param>
+        /// <param name="guid">The unique identifier.</param>
+        /// <returns></returns>
+        public ProductDetailViewModel ReturnProductDetailViewModel(Actions ActionType, string guid)
+        {
+            ProductDetailViewModel DetailViewModel = new ProductDetailViewModel();
+            Product StaticHtmlDBViewModel = _ProductRep.GetSingle(s => s.ProductID == guid);
+            if (StaticHtmlDBViewModel == null) StaticHtmlDBViewModel = new Product();
+            var mapper = AutoMapperConfig.InitializeAutoMapper().CreateMapper();
+            DetailViewModel = mapper.Map<ProductDetailViewModel>(StaticHtmlDBViewModel);
+            return DetailViewModel;
+        }
+
+        /// <summary>
+        /// Creates the specified actity.
+        /// </summary>
+        /// <param name="productDetail">The actity.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns></returns>
+        public string Create(ProductDetailViewModel productDetail, string userName)
+        {
+            try
+            {
+                Product ProductDBViewModel = new Product();
+                var mapper = AutoMapperConfig.InitializeAutoMapper().CreateMapper();
+                ProductDBViewModel = mapper.Map<Product>(productDetail);
+
+                ProductDBViewModel.CreateTime = DateTime.Now;
+                ProductDBViewModel.CreateUser = userName;
+                ProductDBViewModel.UpdateTime = DateTime.Now;
+                ProductDBViewModel.UpdateUser = userName;
+
+                _ProductRep.Create(ProductDBViewModel);
+
+                return EnumHelper.GetEnumDescription(DataAction.CreateScuess);
+            }
+            catch
+            {
+                return EnumHelper.GetEnumDescription(DataAction.CreateFail);
+            }
+        }
+
+        /// <summary>
+        /// Updates the specified product detail.
+        /// </summary>
+        /// <param name="productDetail">The product detail.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns></returns>
+        public string Update(ProductDetailViewModel productDetail, string userName)
+        {
+            try
+            {
+                Product ProductDBViewModel = new Product();
+                Product StaticHtmlDBViewModel = _ProductRep.GetSingle(s => s.ProductID == productDetail.ProductID);
+
+                var mapper = AutoMapperConfig.InitializeAutoMapper().CreateMapper();
+                ProductDBViewModel = mapper.Map<Product>(productDetail);
+
+                ProductDBViewModel.UpdateTime = DateTime.Now;
+                ProductDBViewModel.UpdateUser = userName;
+
+                return EnumHelper.GetEnumDescription(DataAction.UpdateScuess);
+            }
+            catch
+            {
+                return EnumHelper.GetEnumDescription(DataAction.UpdateFail);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the specified identifier.
+        /// </summary>
+        /// <param name="ID">The identifier.</param>
+        /// <param name="userName">Name of the user.</param>
+        /// <returns></returns>
+        public string Delete(string ID, string userName)
+        {
+            try
+            {
+                Product product = _ProductRep.GetSingle(s => s.ProductID.Equals(ID));
+                _ProductRep.Delete(product);
+                return EnumHelper.GetEnumDescription(DataAction.DeleteScuess);
+            }
+            catch
+            {
+                return EnumHelper.GetEnumDescription(DataAction.DeleteFail);
+            }
+        }
+
+        /// <summary>
+        /// Saves this instance.
+        /// </summary>
+        public void Save()
+        {
+            _unitOfWork.Save();
         }
     }
 }

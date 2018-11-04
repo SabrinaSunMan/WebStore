@@ -17,5 +17,11 @@ namespace WebStore.Models
         public int ProductID { get; set; }
         public string ProductName { get; set; }
         public int Qty { get; set; }
+        public System.DateTime CreateTime { get; set; }
+        public System.DateTime UpdateTime { get; set; }
+        public string CreateUser { get; set; }
+        public string UpdateUser { get; set; }
+        public bool Status { get; set; }
+        public Nullable<int> sort { get; set; }
     }
 }

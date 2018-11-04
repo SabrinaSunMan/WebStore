@@ -181,21 +181,25 @@
     <Compile Include="Models\NLog_Error.cs" />
     <Compile Include="Models\Product.cs">
       <DependentUpon>StoreDb.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Models\StoreDb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StoreDb.Context.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Models\StoreDb.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StoreDb.tt</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Models\StoreDb.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StoreDb.edmx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Models\ViewModel\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,9 +210,12 @@
     <Compile Include="Service\ProductService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Store.mdf" />
+    <Content Include="App_Data\Store.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\Store_log.ldf">
       <DependentUpon>Store.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -223,11 +230,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StoreDb.Context.cs</LastGenOutput>
       <DependentUpon>StoreDb.edmx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Models\StoreDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>StoreDb.edmx</DependentUpon>
       <LastGenOutput>StoreDb.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -237,9 +246,11 @@
     <EntityDeploy Include="Models\StoreDb.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>StoreDb.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EntityDeploy>
     <Content Include="Models\StoreDb.edmx.diagram">
       <DependentUpon>StoreDb.edmx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
